@@ -29,6 +29,7 @@ Stage::Stage(int width, int height, const std::string& data)
 	static constexpr char GRASS{ 'g' };
 	static constexpr char INVISIBLE{ 'i' };
 	static constexpr char DIRT{ 'd' };
+	static constexpr char PORTAL{ 'p' };
 	static constexpr char EMPTY{ ' ' };
 
 	for (int i = 0; i < size; ++i)
@@ -41,6 +42,7 @@ Stage::Stage(int width, int height, const std::string& data)
 		case GRASS:		tile = &grassTile;	break;
 		case DIRT:		tile = &dirtTile;	break;
 		case INVISIBLE: tile = &invisibleTile; break;
+		case PORTAL:    tile = &portalTile; break;
 
 		}
 
