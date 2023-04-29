@@ -182,7 +182,7 @@ void Application::handleInput()
 
 	if (buttonStates[sf::Keyboard::Q] == ButtonState::Pressed)
 		player.pos = { 200, 0 };
-
+	
 	if (buttonStates[sf::Keyboard::E] == ButtonState::Pressed)
 	{
 		Entity projectile = createProjectile(
@@ -201,7 +201,10 @@ void Application::handleInput()
 		);
 
 		entities.push_back(projectile);
+	}
 
+	if (buttonStates[sf::Keyboard::E] == ButtonState::Pressed)
+	{
 		if (cutscene)
 			cutscene->nextLine();
 	}
