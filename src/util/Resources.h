@@ -14,8 +14,8 @@ struct Resources
 
 	Resources()
 	{
-		grassTileTexture.loadFromFile("res/grass.png");
-		dirtTileTexture.loadFromFile("res/grass_burn.png");
+		grassTileTexture.loadFromFile("res/grass_burn.png");
+		dirtTileTexture.loadFromFile("res/dirt.png");
 
 		vikingTexture.loadFromFile("res/viking.png");
 
