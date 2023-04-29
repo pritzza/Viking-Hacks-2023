@@ -1,11 +1,15 @@
 #pragma once
 
 #include "util/Window.h"
+#include "util/Resources.h"
 
 #include "Stage.h"
 #include "Entity.h"
 
+<<<<<<< HEAD
 #include "util/Resources.h"
+=======
+>>>>>>> c8c3cd871c8bd6987aabadf4a7f74c2550d8401a
 
 class Application final
 {
@@ -36,6 +40,8 @@ private:
 	const uint8_t m_frameRate;
 
 	bool m_isRunning{ false };
+
+	Resources res;
 
 private:
 	void init();

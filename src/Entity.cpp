@@ -15,10 +15,11 @@ Entity::Entity(
     pos{ pos },
     dim{ dim }
 {
-    box.setSize(sf::Vector2f(dim));
-    box.setFillColor(fill);
-    box.setOutlineColor(outline);
-    box.setOutlineThickness(1.f);
+    //box.setSize(sf::Vector2f(dim));
+    //box.setFillColor(fill);
+    //box.setOutlineColor(outline);
+    //box.setOutlineThickness(1.f);
+
 }
 
 void Entity::update(float dt, Stage& s, std::vector<Entity>& entities)
@@ -88,6 +89,7 @@ void Entity::update(float dt, Stage& s, std::vector<Entity>& entities)
     vel = { 0, 0 };
 
     box.setPosition(sf::Vector2f(pos));
+<<<<<<< HEAD
     sprite.setPosition(sf::Vector2f(pos));
 
     //
@@ -105,11 +107,19 @@ void Entity::update(float dt, Stage& s, std::vector<Entity>& entities)
             }
         }
     }
+=======
+    //
+    sprite.setPosition(sf::Vector2f(pos));
+>>>>>>> c8c3cd871c8bd6987aabadf4a7f74c2550d8401a
 }
 
 void Entity::draw(sf::RenderWindow& window)
 {
     window.draw(box);
+<<<<<<< HEAD
+=======
+
+>>>>>>> c8c3cd871c8bd6987aabadf4a7f74c2550d8401a
     window.draw(sprite);
 }
 

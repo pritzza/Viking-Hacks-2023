@@ -69,6 +69,7 @@ void Application::init()
 		entities.back().hasGravity = true;
 	}
 
+<<<<<<< HEAD
 	Entity vine{ { 100, 100 }, { 25, 300 }, sf::Color::Green, sf::Color{30,180,60} };
 	vine.onCollision = CollisionResponse::ResetJumps;
 	vine.type = EntityType::Object;
@@ -82,6 +83,12 @@ void Application::init()
 
 	player.sprite.setTexture(res.vikingTexture);
 	stage.sprite.setTexture(res.grassTileTexture);
+=======
+	player.sprite.setTexture(res.vikingTexture);
+	player.hasGravity = true;
+
+	stage.tileSprite.setTexture(res.grassTileTexture);
+>>>>>>> c8c3cd871c8bd6987aabadf4a7f74c2550d8401a
 }
 
 void Application::start()
@@ -131,11 +138,11 @@ void Application::applicationLoop()
 		if constexpr (FRAME_DEBUGGING)
 			if (frame % TARGET_FPS == 0)
 			{
-				std::cout << "Cur Time: " << currentFrameStart.asMicroseconds() << '\n';
+				/*std::cout << "Cur Time: " << currentFrameStart.asMicroseconds() << '\n';
 				std::cout << "Avg Frame Dev: " << deviation / frame << '\n';
 				std::cout << "DT: " << dt.asSeconds() << '\n';
 				std::cout << "DT Error: " << dt.asSeconds() - TARGET_FRAME_LENGTH << '\n';
-				std::cout << std::endl;
+				std::cout << std::endl;*/
 			}
 
 
@@ -180,7 +187,7 @@ void Application::update(float dt)
 
     player.update(dt, stage, entities);
 
-	std::cout << "Player vertical velocity: " << -player.acceleration.y << '\n';
+	/*std::cout << "Player vertical velocity: " << -player.acceleration.y << '\n';*/
 
 	for (int i = 0; i < entities.size(); ++i)
 	{
@@ -205,11 +212,18 @@ void Application::render()
     window.clear();
 
 	player.draw(window);
+<<<<<<< HEAD
+	
+	for (Entity& e : entities)
+		e.draw(window);
+=======
+>>>>>>> c8c3cd871c8bd6987aabadf4a7f74c2550d8401a
+
+	stage.draw(window);
 	
 	for (Entity& e : entities)
 		e.draw(window);
 
-	stage.draw(window);
 
     window.display();
 }

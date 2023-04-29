@@ -1,8 +1,10 @@
 #pragma once
 
 #include <vector>
+#include <SFML/Graphics.hpp>S
 
 #include <SFML/Graphics.hpp>
+
 
 struct Tile
 {
@@ -21,7 +23,12 @@ public:
 	int height;
 	int size;
 
+<<<<<<< HEAD
 	sf::Sprite sprite;
 	
+=======
+	sf::Sprite tileSprite;
+
+>>>>>>> c8c3cd871c8bd6987aabadf4a7f74c2550d8401a
 	void draw(sf::RenderWindow& w);
 };
