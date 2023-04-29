@@ -7,8 +7,8 @@ using namespace std;
 //defintion or declaration of the class
 class Intro
 {
-private:
-    string username;
+public:
+    static string username;
     string temp;
     string c;
     

@@ -159,7 +159,7 @@ void Entity::draw(sf::RenderWindow& window)
     if (shouldDespawn)
         return;
 
-    constexpr bool DRAW_BOUNDING_BOXES{ true };
+    constexpr bool DRAW_BOUNDING_BOXES{ false };
     if constexpr (DRAW_BOUNDING_BOXES)
         window.draw(box);
 

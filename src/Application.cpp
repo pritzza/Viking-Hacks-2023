@@ -7,6 +7,8 @@
 #include <functional>
 #include <math.h>
 
+#include "intro.h"
+
 enum class ButtonState
 {
 	Idle,
@@ -72,23 +74,25 @@ void Application::init()
 	}
 
 	// adding entities
-	Entity vine{ createVine({ 100, 100 }, { 25, 300 }, res) };
+	Entity vine{ createVine({ 1000, 100 }, { 25, 300 }, res) };
 	entities.push_back(vine);
 
-	Entity tree{ createDeadTree({500, 100}, {32, 160}, res) };
+	Entity tree{ createDeadTree({600, 500}, {32, 160}, res) };
 	entities.push_back(tree);
 
-	Entity badGuy1{ createBadGuy({800, 100}, res) };
+	Entity badGuy1{ createBadGuy({800, 800}, res) };
 	entities.push_back(badGuy1);
 
-	Entity badGuy2{ createBadGuy({300, 100}, res) };
+	Entity badGuy2{ createBadGuy({400, 500}, res) };
 	entities.push_back(badGuy2);
 
-	Entity badGuy3{ createBadGuy({2300, 100}, res) };
+	Entity badGuy3{ createBadGuy({2000, 100}, res) };
 	entities.push_back(badGuy3);
 
+	player.pos = { 500, 500 };
+
 	// cutscene
-	std::vector<std::string> lines{ "Hello World!", "Blah Blah Blah", "Does this work?" };
+	std::vector<std::string> lines{ "Hello " + Intro::username, "We're not going to let you save the environment!", "Mwahahaha, we've burned the forest!" };
 	Cutscene* scene = new Cutscene{ lines };
 	scene->spotlight = &entities[2];
 	scene->init(res);
