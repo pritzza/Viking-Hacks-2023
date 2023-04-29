@@ -29,7 +29,7 @@ private:
 
 	Cutscene* cutscene{ nullptr };
 
-	Entity player{ {4,4}, {25,50}, sf::Color::Transparent, sf::Color::Transparent };
+	Entity player{ createPlayer(res) };
 	std::vector<Entity> entities;
 
 	// LOOK AT CONSTRUCTOR OF Stage IN Stage.cpp FOR CHARACTER MAPPINGS
@@ -43,26 +43,26 @@ private:
 		i....................................................................................................................................................ddddddddddd
 		i....................................................................................................................................................ddddddddddd
 		i....................................................................................................................................................ddddddddddd
-		i....................................................................................................................................................ddddddddddd
-		i..................................................................................................ggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggd
-		i..................................................................................................ddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd
-		i..................................................................................................ddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd
-		i..................................................................................................ddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd
-		i..................................................................................................ddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd
-		gggggggg...........................................................................................ddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd
-		ddddddddg..........................................................................................ddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd
-		dddddddddg..............................................g..........................................ddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd
-		ddddddddddg............................................gdg.........................................ddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd
-		dddddddddddgggggggggggggggggggggggggggg...gggggggggggggdddgggggggggggggg...gg...gggggggggggggggggggddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd
-		ddddddddddddddddddddddddddddddddddddddg...gddddddddddddddddddddddddddddd...dd...dddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd
-		ddddddddddddddddddddddddddddddddddddddg...gddddddddddddddddddddddddddddd...dd...dddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd
-		ddddddddddddddddddddddddddddddddddddddg...gddddddddddddddddddddddddddddd...dd...dddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd
-		ddddddddddddddddddddddddddddddddddddddg...gddddddddddddddddddddddddddddd...dd...dddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd
-		ddddddddddddddddddddddddddddddddddddddgpppgdddddddddddddddddddddddddddddpppddpppdddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd
+		i........................gggggggggggg................................................................................................................ddddddddddd
+		i........................dddddddddddd..............................................................ggggggggggggggggggggggggggggggggggggggggggggggggggddddddddddd
+		i........................dddddddddddd.............................................................dddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd
+		i........................dddddddddddd.............................................................dddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd
+		i........................dddddddddddd..................................................ggggg.......ddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd
+		i......................................................................................ddddd.......ddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd
+		gggggggg................................................ggg............................ddddd.......ddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd
+		ddddddddg...........................................ggggddd........................................ddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd
+		dddddddddg..........................................ddddddd........................................ddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd
+		ddddddddddg.........................................ddddddd..........gg...........................dddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd
+		dddddddddddgggggggggggggggggggggggggggg...gggggggggggggggggggggg.....dd.....gg...gggggggggggggggggggdddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd
+		ddddddddddddddddddddddddddddddddddddddd...dddddddddddddddddddddd.....dd.....dd...ddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd
+		ddddddddddddddddgdddgdddddddddddddddddd...dddddddddddddddddddddd.....dd.....dd...ddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd
+		dddddddddddddgdddddddddgddddddddddddddd...dddddddddddddddddddddd.....dd.....dd...ddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd
+		ddddddddddddddgggggggggdddddddddddddddd...dddddddddddddddddddddd.....dd.....dd...ddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd
+		dddddddddddddddddddddddddddddddddddddddpppddddddddddddddddddddddpppppddppppppdpppddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd
 		)"
 	};
 	//widthxheightxlevel data
-    Stage stage{ 160, 24, STAGE_1_DATA };
+    Stage stage{ 160, 24, STAGE_1_DATA, res };
 
 	int frame{};
 

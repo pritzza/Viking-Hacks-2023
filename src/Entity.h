@@ -4,6 +4,8 @@
 
 struct Stage;
 
+struct Resources;
+
 enum class CollisionResponse
 {
     Nothing,
@@ -21,13 +23,23 @@ enum class EntityType
     Player
 };
 
+enum class EntityID
+{
+    Null,
+    Player,
+    BadGuy,
+    Tree,
+    Vine,
+    Seeds,
+    Cloud,
+    Projectile
+};
+
 struct Entity
 {
     //JUSTIN VARIABLES TO CHANGE LIKE SPEED AND STUFF
     const float playerRunSpeed =40;
     const float playerJumpSpeed = 50;
-
-
 
     Entity(
         const sf::Vector2f& pos,
@@ -64,6 +76,7 @@ struct Entity
     int numJumpsLeft{ 0 };
 
     EntityType type{ EntityType::Object };
+    EntityID id{ EntityID::Null };
 
     float runSpeed{ playerRunSpeed };
     float jumpSpeed{ playerJumpSpeed };
@@ -87,4 +100,33 @@ Entity createProjectile(
     std::vector<CollisionResponse> entityHitSelfResponse,
     std::vector<CollisionResponse> entityHitOtherResponse,
     std::vector<CollisionResponse> tileHit
+);
+
+Entity createPlayer(Resources& res);
+
+Entity createVine(
+    const sf::Vector2f& pos,
+    const sf::Vector2f& dim,
+    Resources& res
+);
+
+Entity createDeadTree(
+    const sf::Vector2f& pos,
+    const sf::Vector2f& dim,
+    Resources& res
+);
+
+Entity createBadGuy(
+    const sf::Vector2f& pos,
+    Resources& res
+);
+
+Entity createWaterDrop(
+    const sf::Vector2f& pos,
+    Resources& res
+);
+
+Entity createWaterDropPoison(
+    const sf::Vector2f& pos,
+    Resources& res
 );

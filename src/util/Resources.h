@@ -19,6 +19,12 @@ struct Resources
 	sf::Texture vineTexture;
 	sf::Texture rainDropTexture;
 	sf::Texture rainDropPoisonTexture;
+	sf::Texture evilcorpEmployeeTexture;
+
+	// backgrounds
+	sf::Texture forestBackgroundTexture;
+	sf::Texture waterBackgroundTexture;
+	sf::Texture waterBackgroundPoisonTexture;
 
 
 	// fonts
@@ -38,6 +44,11 @@ struct Resources
 		vineTexture.loadFromFile("res/vine.png");
 		rainDropTexture.loadFromFile("res/rain_drop.png");
 		rainDropPoisonTexture.loadFromFile("res/rain_drop_poison.png");
+		evilcorpEmployeeTexture.loadFromFile("res/evilcorp_employee.png");
+
+		forestBackgroundTexture.loadFromFile("res/forest_background.png");
+		waterBackgroundTexture.loadFromFile("res/water_background.png");
+		waterBackgroundPoisonTexture.loadFromFile("res/water_background_poison.png");
 
 		textFont.loadFromFile("C:/Windows/Fonts/Calibri.ttf");
 	}

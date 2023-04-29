@@ -2,6 +2,7 @@
 
 #include "Stage.h"
 #include "util/AABB.h"
+#include "util/Resources.h"
 
 #include <iostream>
 
@@ -127,8 +128,7 @@ void Entity::update(float dt, Stage& s, std::vector<Entity>& entities)
     box.setPosition(sf::Vector2f(pos));
     sprite.setPosition(sf::Vector2f(pos));
 
-    //
-
+    // entity-entity collision
     for (Entity& e : entities)
     {
         AABB other{ e.pos.x, e.pos.y, e.dim.x, e.dim.y };
@@ -159,7 +159,10 @@ void Entity::draw(sf::RenderWindow& window)
     if (shouldDespawn)
         return;
 
-    window.draw(box);
+    constexpr bool DRAW_BOUNDING_BOXES{ true };
+    if constexpr (DRAW_BOUNDING_BOXES)
+        window.draw(box);
+
     window.draw(sprite);
 }
 
@@ -198,6 +201,26 @@ void Entity::respond(CollisionResponse response)
     }
 }
 
+Entity createPlayer(Resources& res)
+{
+    float w = 23.f;
+    float h = 40.f;
+
+    float scale{ 2.f };
+
+    Entity player{ {0,0}, (sf::Vector2f{w,h} * scale), sf::Color::White, sf::Color::Blue };
+
+    player.hasGravity = true;
+    player.maxNumJumps = 2;
+    player.type = EntityType::Player;
+
+    player.sprite.setTexture(res.vikingTexture);
+
+    player.sprite.setScale({ scale, scale });
+
+    return player;
+}
+
 Entity createProjectile(
     const Entity& caster,
     std::vector<EntityType> validTargets,
@@ -216,6 +239,9 @@ Entity createProjectile(
     sf::Vector2f position{ (caster.pos + (caster.dim / 2.f) - (dimensions / 2.f)) };
     Entity proj{ position, dimensions, outlineColor, fillColor };
 
+    proj.type = EntityType::Object;
+    proj.id = EntityID::Projectile;
+
     proj.validTargets = validTargets;
 
     proj.acceleration = direction * speed;
@@ -228,4 +254,66 @@ Entity createProjectile(
     proj.onTileCollision = tileHit;
 
     return proj;
+}
+
+Entity createVine(const sf::Vector2f& pos, const sf::Vector2f& dim, Resources& res)
+{
+    Entity vine{ pos, dim, sf::Color::Green, sf::Color{30,180,60} };
+
+    vine.onEntityCollisionOtherResponse = { CollisionResponse::ResetJumps };
+    vine.validTargets = { EntityType::Player };
+    vine.type = EntityType::Object;
+    vine.id = EntityID::Vine;
+    vine.hasGravity = false;
+
+    float VINE_WIDTH{ 16.f };
+    float VINE_HEIGHT{ 80.f };
+
+    vine.sprite.setScale({ dim.x / VINE_WIDTH, dim.y / VINE_HEIGHT });
+
+    vine.sprite.setTexture(res.vineTexture);
+
+    return vine;
+}
+
+Entity createDeadTree(const sf::Vector2f& pos, const sf::Vector2f& dim, Resources& res)
+{
+    Entity tree{ pos, dim, sf::Color::Green, sf::Color{30,180,60} };
+
+    tree.type = EntityType::Object;
+    tree.id = EntityID::Tree;
+
+    tree.hasGravity = true;
+
+    float TREE_WIDTH{ 16.f };
+    float TREE_HEIGHT{ 64.f };
+
+    tree.sprite.setScale({ dim.x / TREE_WIDTH, dim.y / TREE_HEIGHT });
+
+    tree.sprite.setTexture(res.deadTreeTexture);
+
+    return tree;
+}
+
+Entity createBadGuy(const sf::Vector2f& pos, Resources& res)
+{
+    float w = 16;
+    float h = 32;
+    float scale = 2;
+    sf::Vector2f dim{ w,h };
+
+    Entity badGuy{ pos, dim* scale, sf::Color::Green, sf::Color{30,180,60} };
+
+    badGuy.type = EntityType::Enemy;
+    badGuy.id = EntityID::BadGuy;
+
+    badGuy.onEntityCollisionOtherResponse = { CollisionResponse::Hurt };
+    badGuy.onEntityCollisionSelfResponse = {};
+    badGuy.hasGravity = true;
+
+
+    badGuy.sprite.setScale({ scale,scale });
+    badGuy.sprite.setTexture(res.evilcorpEmployeeTexture);
+
+    return badGuy;
 }

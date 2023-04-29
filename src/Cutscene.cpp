@@ -1,5 +1,6 @@
 #include "Cutscene.h"
 
+#include "Entity.h"
 #include "util/Resources.h"
 
 Cutscene::Cutscene(std::vector<std::string> lines)
@@ -49,6 +50,11 @@ void Cutscene::updateDialogue()
 	}
 
 	dialogueText.setString(currentText);
+
+	if (spotlight)
+	{
+		dialogueText.setPosition(spotlight->pos);
+	}
 }
 
 void Cutscene::draw(sf::RenderWindow& window, sf::View& camera)

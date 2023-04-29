@@ -35,14 +35,16 @@ struct Tile
 struct Stage
 {
 public:
-	Stage(int width, int height, const std::string& data);
-	//first argument if solid, second is if harm
+	Stage(int width, int height, const std::string& data, Resources& res);
+
+	//arguments (Graphic, isSolid, isHarmful)
 	inline static const Tile grassTile{ Tile::Graphic::Grass,	true,	false };
 	inline static const Tile emptyTile{ Tile::Graphic::Empty,	false,	false };
 	inline static const Tile invisibleTile{ Tile::Graphic::Empty,	true,	false };
 	inline static const Tile dirtTile{  Tile::Graphic::Dirt,	true,	false };
 	inline static const Tile portalTile{ Tile::Graphic::Empty,	false,	true };
 
+	sf::Sprite background;
 
 	std::vector<const Tile*> tiles;
 

@@ -71,25 +71,26 @@ void Application::init()
 		entities.back().hasGravity = true;
 	}
 
-	// set up vine
-	Entity vine{ { 100, 100 }, { 25, 300 }, sf::Color::Green, sf::Color{30,180,60} };
-	vine.onEntityCollisionOtherResponse = { CollisionResponse::ResetJumps };
-	vine.validTargets = { EntityType::Player };
-	vine.type = EntityType::Object;
-	vine.hasGravity = false;
-
+	// adding entities
+	Entity vine{ createVine({ 100, 100 }, { 25, 300 }, res) };
 	entities.push_back(vine);
 
-	// set up player
-	player.hasGravity = true;
-	player.maxNumJumps = 2;
-	player.type = EntityType::Player;
-	player.sprite.setTexture(res.vikingTexture);
+	Entity tree{ createDeadTree({500, 100}, {32, 160}, res) };
+	entities.push_back(tree);
 
+	Entity badGuy1{ createBadGuy({800, 100}, res) };
+	entities.push_back(badGuy1);
+
+	Entity badGuy2{ createBadGuy({300, 100}, res) };
+	entities.push_back(badGuy2);
+
+	Entity badGuy3{ createBadGuy({2300, 100}, res) };
+	entities.push_back(badGuy3);
 
 	// cutscene
 	std::vector<std::string> lines{ "Hello World!", "Blah Blah Blah", "Does this work?" };
 	Cutscene* scene = new Cutscene{ lines };
+	scene->spotlight = &entities[2];
 	scene->init(res);
 
 	cutscene = scene;
@@ -183,7 +184,7 @@ void Application::handleInput()
 	if (buttonStates[sf::Keyboard::Q] == ButtonState::Pressed)
 		player.pos = { 200, 0 };
 	
-	if (buttonStates[sf::Keyboard::E] == ButtonState::Pressed)
+	if (buttonStates[sf::Keyboard::P] == ButtonState::Pressed)
 	{
 		Entity projectile = createProjectile(
 			player,
@@ -225,6 +226,7 @@ void Application::update(float dt)
 	updateButtonState(sf::Keyboard::Space);
 	updateButtonState(sf::Keyboard::E);
 	updateButtonState(sf::Keyboard::Q);
+	updateButtonState(sf::Keyboard::P);
 
     player.update(dt, stage, entities);
 
@@ -232,14 +234,12 @@ void Application::update(float dt)
 	{
 		Entity& e{ entities[i] };
 
-		if (e.type != EntityType::Object)
-		{
-			if (frame % (120 / (i + 1)) == 0)
-				e.jump(30);
-		}
-
 		e.update(dt, stage, entities);
 	}
+
+	constexpr float PARALLAX_STRENGTH{ 1.5f };
+	sf::Vector2f stageDim(stage.background.getTexture()->getSize() / 2u);
+	stage.background.setPosition((player.pos / PARALLAX_STRENGTH) - stageDim);
 
 	if (cutscene)
 	{
@@ -263,12 +263,14 @@ void Application::render()
 
     window.clear();
 
-	player.draw(window);
-	
+	window.draw(stage.background);
+
 	for (Entity& e : entities)
 		e.draw(window);
 
 	stage.draw(window, res);
+
+	player.draw(window);
 
 	if (cutscene)
 		cutscene->draw(window, view);

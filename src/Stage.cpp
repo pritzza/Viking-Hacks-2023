@@ -8,13 +8,18 @@
 
 #include "util/Resources.h"
 
-Stage::Stage(int width, int height, const std::string& data)
+Stage::Stage(int width, int height, const std::string& data, Resources& res)
 	:
 	width{ width },
 	height{ height },
 	size{ width * height },
 	tiles{ width * height }
 {
+	// background
+	background.setTexture(res.forestBackgroundTexture);
+	background.setScale({10.f, 10.f});
+
+	// tile data stuff
 	std::string parsedData;
 	for (const char c : data)
 	{
@@ -43,7 +48,6 @@ Stage::Stage(int width, int height, const std::string& data)
 		case DIRT:		tile = &dirtTile;	break;
 		case INVISIBLE: tile = &invisibleTile; break;
 		case PORTAL:    tile = &portalTile; break;
-
 		}
 
 		tiles[i] = tile;
@@ -100,8 +104,12 @@ void Tile::draw(sf::RenderWindow& window, Resources& res, const sf::Vector2i& po
 
 	sprite.setTexture(*texture);
 
-	boundingBox.setPosition(sf::Vector2f{ pos * LENGTH });
-	window.draw(boundingBox);
+	constexpr bool DRAW_TILE_BOUNDING_BOXES{ false };
+	if constexpr (DRAW_TILE_BOUNDING_BOXES)
+	{
+		boundingBox.setPosition(sf::Vector2f{ pos * LENGTH });
+		window.draw(boundingBox);
+	}
 
 	sprite.setPosition(sf::Vector2f{ pos * LENGTH });
 	window.draw(sprite);
