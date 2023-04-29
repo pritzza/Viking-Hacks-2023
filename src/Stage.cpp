@@ -27,6 +27,7 @@ Stage::Stage(int width, int height, const std::string& data)
 		std::cout << "ERROR LEVEL DATA NOT SAME SIZE";
 
 	static constexpr char GRASS{ 'g' };
+	static constexpr char INVISIBLE{ 'i' };
 	static constexpr char DIRT{ 'd' };
 	static constexpr char EMPTY{ ' ' };
 
@@ -39,6 +40,8 @@ Stage::Stage(int width, int height, const std::string& data)
 		{
 		case GRASS:		tile = &grassTile;	break;
 		case DIRT:		tile = &dirtTile;	break;
+		case INVISIBLE: tile = &invisibleTile; break;
+
 		}
 
 		tiles[i] = tile;

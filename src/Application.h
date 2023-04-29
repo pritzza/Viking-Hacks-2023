@@ -35,15 +35,15 @@ private:
 	// LOOK AT CONSTRUCTOR OF Stage IN Stage.cpp FOR CHARACTER MAPPINGS
 	const std::string STAGE_1_DATA{
 		R"(
-		..........
-		..........
-		....gggg..
-		gggggddggg
-		dddddddddd
+		i..................i
+		i..................i
+		i...gggg...........i
+		gggggddggggggggggggg
+		dddddddddddddddddddd
 		)"
 	};
-
-    Stage stage{ 10, 5, STAGE_1_DATA };
+	//widthxheightxlevel data
+    Stage stage{ 20, 5, STAGE_1_DATA };
 
 	int frame{};
 
