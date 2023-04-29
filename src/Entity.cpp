@@ -23,10 +23,20 @@ Entity::Entity(
 
 void Entity::update(float dt, Stage& s, std::vector<Entity>& entities)
 {
-    if (hasGravity)
-        acceleration.y += 1;
+    if (shouldDespawn)
+        return;
 
-    acceleration *= 0.9f;
+    lifetime -= dt;
+
+    if (lifetime < 0)
+        shouldDespawn = true;
+
+    //physics 
+    if (hasGravity)
+    {
+        acceleration.y += 1;
+        acceleration *= 0.9f;
+    }
 
     constexpr float MIN_ACCELERATION{ 0.1f };
 
@@ -53,6 +63,19 @@ void Entity::update(float dt, Stage& s, std::vector<Entity>& entities)
 
             if (verticalCollision)
             {
+                const bool isDisappearing{ 
+                    std::find(
+                    onTileCollision.begin(),
+                    onTileCollision.end(),
+                    CollisionResponse::Disappear
+                    ) 
+                    !=
+                    onTileCollision.end() 
+                };
+
+                if (isDisappearing)
+                    shouldDespawn = true;
+
                 const bool isUp{ vel.y < 0 };
 
                 if (isUp)
@@ -71,6 +94,19 @@ void Entity::update(float dt, Stage& s, std::vector<Entity>& entities)
 
             if (horizontalCollision)
             {
+                const bool isDisappearing{
+                    std::find(
+                    onTileCollision.begin(),
+                    onTileCollision.end(),
+                    CollisionResponse::Disappear
+                    )
+                    !=
+                    onTileCollision.end()
+                };
+
+                if (isDisappearing)
+                    shouldDespawn = true;
+
                 const bool isLeft{ vel.x < 0 };
             
                 if (isLeft)
@@ -84,7 +120,6 @@ void Entity::update(float dt, Stage& s, std::vector<Entity>& entities)
         }
     }
 
-
     pos.y += vel.y * dt * jumpSpeed;
     pos.x += vel.x * dt * runSpeed;
     vel = { 0, 0 };
@@ -94,16 +129,26 @@ void Entity::update(float dt, Stage& s, std::vector<Entity>& entities)
 
     //
 
-    for (const Entity& e : entities)
+    for (Entity& e : entities)
     {
         AABB other{ e.pos.x, e.pos.y, e.dim.x, e.dim.y };
         AABB self{ pos.x, pos.y, dim.x, dim.y };
 
         if (collide(self, other))
         {
-            if (e.onCollision == CollisionResponse::ResetJumps)
+            bool validCollision{ false };
+
+            for (EntityType target : validTargets)
+                if (e.type == target)
+                    validCollision = true;
+
+            if (validCollision)
             {
-                this->numJumpsLeft = 1;
+                for (CollisionResponse selfResponse : this->onEntityCollisionSelfResponse)
+                    this->respond(selfResponse);
+
+                for (CollisionResponse otherResponse : this->onEntityCollisionOtherResponse)
+                    e.respond(otherResponse);
             }
         }
     }
@@ -111,12 +156,16 @@ void Entity::update(float dt, Stage& s, std::vector<Entity>& entities)
 
 void Entity::draw(sf::RenderWindow& window)
 {
+    if (shouldDespawn)
+        return;
+
     window.draw(box);
     window.draw(sprite);
 }
 
 void Entity::move(const sf::Vector2f& f)
 {
+    direction = f;
     acceleration += f;
 }
 
@@ -127,4 +176,56 @@ void Entity::jump(int height)
         acceleration.y = -height;
         numJumpsLeft--;;
     }
+}
+
+void Entity::respond(CollisionResponse response)
+{
+    switch (response)
+    {
+    case CollisionResponse::Disappear:
+        shouldDespawn = true;
+        break;
+    case CollisionResponse::Hurt:
+            std::cout << this << ": Ouch!!!\n";
+        break;
+    case CollisionResponse::ResetJumps:
+            numJumpsLeft = 1;
+        break;
+    case CollisionResponse::Stop:
+        // todo
+        break;
+
+    }
+}
+
+Entity createProjectile(
+    const Entity& caster,
+    std::vector<EntityType> validTargets,
+    float speed,
+    bool hasGravity,
+    float lifetime,
+    const sf::Vector2f& direction,
+    const sf::Vector2f& dimensions,
+    const sf::Color& fillColor,
+    const sf::Color& outlineColor,
+    std::vector<CollisionResponse> entityHitSelfResponse,
+    std::vector<CollisionResponse> entityHitOtherResponse,
+    std::vector<CollisionResponse> tileHit
+)
+{
+    sf::Vector2f position{ (caster.pos + (caster.dim / 2.f) - (dimensions / 2.f)) };
+    Entity proj{ position, dimensions, outlineColor, fillColor };
+
+    proj.validTargets = validTargets;
+
+    proj.acceleration = direction * speed;
+    proj.hasGravity = hasGravity;
+
+    proj.lifetime = lifetime; // no projectile should last longer than 10 seconds
+
+    proj.onEntityCollisionSelfResponse = entityHitSelfResponse;
+    proj.onEntityCollisionOtherResponse = entityHitOtherResponse;
+    proj.onTileCollision = tileHit;
+
+    return proj;
 }

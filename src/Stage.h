@@ -48,7 +48,5 @@ public:
 	int height;
 	int size;
 
-	sf::Sprite sprite;
-	
 	void draw(sf::RenderWindow& w, Resources& res);
 };

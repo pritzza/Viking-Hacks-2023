@@ -6,15 +6,18 @@ struct Stage;
 
 enum class CollisionResponse
 {
+    Nothing,
     ResetJumps,
     Hurt,
-    Solid,
+    Stop,
+    Disappear,
 };
 
 enum class EntityType
 {
     Object,
     Creature,
+    Enemy,
     Player
 };
 
@@ -38,8 +41,16 @@ struct Entity
     sf::Vector2f vel{ 0, 0 };
     sf::Vector2f dim;
     sf::Vector2f acceleration{ 0, 0 };
+    sf::Vector2f direction{ -1, 0 };
 
-    CollisionResponse onCollision;
+    std::vector<EntityType> validTargets;
+
+    std::vector<CollisionResponse> onEntityCollisionSelfResponse;
+    std::vector<CollisionResponse> onEntityCollisionOtherResponse;
+    std::vector<CollisionResponse> onTileCollision;
+
+    bool shouldDespawn{ false };
+    float lifetime{ 100000000000.f }; // seconds
 
     bool hasGravity{ false };
     bool isGrounded{ false };
@@ -52,4 +63,22 @@ struct Entity
     float jumpSpeed{ 50 };
 
     void jump(int height);
+
+    void respond(CollisionResponse response);
+
 };
+
+Entity createProjectile(
+    const Entity& caster,
+    std::vector<EntityType> validTargets,
+    float speed,
+    bool hasGravity,
+    float lifetime,
+    const sf::Vector2f& direction,
+    const sf::Vector2f& dimensions,
+    const sf::Color& fillColor,
+    const sf::Color& outlineColor,
+    std::vector<CollisionResponse> entityHitSelfResponse,
+    std::vector<CollisionResponse> entityHitOtherResponse,
+    std::vector<CollisionResponse> tileHit
+);

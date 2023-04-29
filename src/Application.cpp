@@ -65,26 +65,29 @@ void Application::init()
 	for (int i = 0; i < 3; ++i)
 	{
 		e.pos = sf::Vector2f{ (i * 100.f) + 100.f, 100.f };
-		e.type = EntityType::Creature;
+		e.type = EntityType::Enemy;
 		entities.push_back(e);
 
 		entities.back().hasGravity = true;
 	}
 
+	// set up vine
 	Entity vine{ { 100, 100 }, { 25, 300 }, sf::Color::Green, sf::Color{30,180,60} };
-	vine.onCollision = CollisionResponse::ResetJumps;
+	vine.onEntityCollisionOtherResponse = { CollisionResponse::ResetJumps };
+	vine.validTargets = { EntityType::Player };
 	vine.type = EntityType::Object;
 	vine.hasGravity = false;
 
 	entities.push_back(vine);
 
+	// set up player
 	player.hasGravity = true;
-
 	player.maxNumJumps = 2;
-
+	player.type = EntityType::Player;
 	player.sprite.setTexture(res.vikingTexture);
-	stage.sprite.setTexture(res.grassTileTexture);
 
+
+	// cutscene
 	std::vector<std::string> lines{ "Hello World!", "Blah Blah Blah", "Does this work?" };
 	Cutscene* scene = new Cutscene{ lines };
 	scene->init(res);
@@ -146,12 +149,10 @@ void Application::applicationLoop()
 				std::cout << std::endl;
 			}
 
-
 		// main loop
 		this->handleInput();
 		this->update(dt.asSeconds());
 		this->render();
-
 
 		// timing stuff again
 		frame++;
@@ -184,6 +185,23 @@ void Application::handleInput()
 
 	if (buttonStates[sf::Keyboard::E] == ButtonState::Pressed)
 	{
+		Entity projectile = createProjectile(
+			player,
+			{ EntityType::Enemy },
+			30,
+			false,
+			0.2,
+			player.direction,
+			{ 20,20 },
+			sf::Color::White,
+			sf::Color::Green,
+			{ CollisionResponse::Disappear },	// self
+			{ CollisionResponse::Hurt },		// other
+			{ CollisionResponse::Disappear }	// tile
+		);
+
+		entities.push_back(projectile);
+
 		if (cutscene)
 			cutscene->nextLine();
 	}
@@ -210,11 +228,13 @@ void Application::update(float dt)
 	for (int i = 0; i < entities.size(); ++i)
 	{
 		Entity& e{ entities[i] };
+
 		if (e.type != EntityType::Object)
 		{
 			if (frame % (120 / (i + 1)) == 0)
 				e.jump(30);
 		}
+
 		e.update(dt, stage, entities);
 	}
 
