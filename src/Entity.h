@@ -34,8 +34,6 @@ struct Entity
     sf::RectangleShape box;
     sf::Sprite sprite;
 
-    sf::Sprite sprite;
-
     sf::Vector2f pos;
     sf::Vector2f vel{ 0, 0 };
     sf::Vector2f dim;
