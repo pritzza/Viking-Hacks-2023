@@ -66,6 +66,7 @@ void Entity::update(float dt, Stage& s, std::vector<Entity>& entities)
                 }
 
                 vel.y = 0;
+                acceleration.y = 0;
             }
 
             if (horizontalCollision)
@@ -78,6 +79,7 @@ void Entity::update(float dt, Stage& s, std::vector<Entity>& entities)
                     pos.x = tile.left() - dim.x;
             
                 vel.x = 0;
+                acceleration.x = 0;
             }
         }
     }

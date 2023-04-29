@@ -127,7 +127,7 @@ void Application::applicationLoop()
 
 		dt = sf::seconds(
 			std::clamp(dt.asSeconds(), MIN_DT.asSeconds(), MAX_DT.asSeconds()
-			));
+		));
 
 		if (frame > 60)
 			deviation += dt.asSeconds() - TARGET_FRAME_LENGTH;
@@ -177,6 +177,9 @@ void Application::handleInput()
 	if (buttonStates[sf::Keyboard::Space] == ButtonState::Pressed)
 		player.jump(20);
 
+	if (buttonStates[sf::Keyboard::Q] == ButtonState::Pressed)
+		player.pos = { 200, 0 };
+
 	if (buttonStates[sf::Keyboard::E] == ButtonState::Pressed)
 	{
 		if (cutscene)
@@ -195,8 +198,10 @@ void Application::update(float dt)
 		return;
 	}
 
+	// need to update state of every key in use
 	updateButtonState(sf::Keyboard::Space);
 	updateButtonState(sf::Keyboard::E);
+	updateButtonState(sf::Keyboard::Q);
 
     player.update(dt, stage, entities);
 

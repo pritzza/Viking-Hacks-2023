@@ -33,7 +33,7 @@ void Stage::draw(sf::RenderWindow& w)
 	tile.setOutlineThickness(1);
 	tile.setOutlineColor(sf::Color::White);
 
-	const sf::Vector2f tileSpriteScale = { Tile::LENGTH / 12.f, Tile::LENGTH / 12.f };
+	const sf::Vector2f tileSpriteScale = { 2.f, 2.f };
 	sprite.setScale(tileSpriteScale);
 
 	for (int i = 0; i < size; ++i)
