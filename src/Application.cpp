@@ -82,6 +82,12 @@ void Application::init()
 
 	player.sprite.setTexture(res.vikingTexture);
 	stage.sprite.setTexture(res.grassTileTexture);
+
+	std::vector<std::string> lines{ "Hello World!", "Blah Blah Blah", "Does this work?" };
+	Cutscene* scene = new Cutscene{ lines };
+	scene->init(res);
+
+	cutscene = scene;
 }
 
 void Application::start()
@@ -170,17 +176,29 @@ void Application::handleInput()
 
 	if (buttonStates[sf::Keyboard::Space] == ButtonState::Pressed)
 		player.jump(20);
+
+	if (buttonStates[sf::Keyboard::E] == ButtonState::Pressed)
+	{
+		if (cutscene)
+			cutscene->nextLine();
+	}
 }
 
 void Application::update(float dt)
 {
 	m_window.update();
 
+	const bool windowClosed{ !m_window.getWindow().isOpen() };
+	if (windowClosed)
+	{
+		m_isRunning = false;
+		return;
+	}
+
 	updateButtonState(sf::Keyboard::Space);
+	updateButtonState(sf::Keyboard::E);
 
     player.update(dt, stage, entities);
-
-	std::cout << "Player vertical velocity: " << -player.acceleration.y << '\n';
 
 	for (int i = 0; i < entities.size(); ++i)
 	{
@@ -192,6 +210,17 @@ void Application::update(float dt)
 		}
 		e.update(dt, stage, entities);
 	}
+
+	if (cutscene)
+	{
+		cutscene->update(dt);
+
+		if (cutscene->isOver)
+		{
+			delete cutscene;
+			cutscene = nullptr;
+		}
+	}
 }
 
 void Application::render()
@@ -199,7 +228,7 @@ void Application::render()
     sf::RenderWindow& window{ m_window.getWindow() };
 
 	view.setCenter(player.pos + (player.dim/2.f));
-	view.setSize({ 800,600 });
+	view.setSize({ 600,400 });
 	window.setView(view);
 
     window.clear();
@@ -210,6 +239,9 @@ void Application::render()
 		e.draw(window);
 
 	stage.draw(window);
+
+	if (cutscene)
+		cutscene->draw(window, view);
 
     window.display();
 }

@@ -1,11 +1,12 @@
 #pragma once
 
-#include "util/Window.h"
 
-#include "Stage.h"
+#include "Cutscene.h"
 #include "Entity.h"
+#include "Stage.h"
 
 #include "util/Resources.h"
+#include "util/Window.h"
 
 class Application final
 {
@@ -25,6 +26,8 @@ private:
 	sf::View view;
 
 	Resources res;
+
+	Cutscene* cutscene{ nullptr };
 
 	Entity player{ {0,0}, {50,50}, sf::Color::White, sf::Color::Blue };
 	std::vector<Entity> entities;
