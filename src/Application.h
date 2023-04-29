@@ -29,7 +29,7 @@ private:
 
 	Cutscene* cutscene{ nullptr };
 
-	Entity player{ {0,0}, {50,50}, sf::Color::White, sf::Color::Blue };
+	Entity player{ {0,0}, {25,50}, sf::Color::White, sf::Color::Blue };
 	std::vector<Entity> entities;
 
 	// LOOK AT CONSTRUCTOR OF Stage IN Stage.cpp FOR CHARACTER MAPPINGS
