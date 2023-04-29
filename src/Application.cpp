@@ -58,6 +58,8 @@ Application::Application(const uint16_t width, const uint16_t height, const uint
 
 void Application::init()
 {
+	Tile::init();
+
 	Entity e{ { 100,100 }, { 50,50 }, sf::Color::White, sf::Color::Red };
 
 	for (int i = 0; i < 3; ++i)
@@ -243,7 +245,7 @@ void Application::render()
 	for (Entity& e : entities)
 		e.draw(window);
 
-	stage.draw(window);
+	stage.draw(window, res);
 
 	if (cutscene)
 		cutscene->draw(window, view);

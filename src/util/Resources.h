@@ -6,6 +6,8 @@
 struct Resources
 {
 	sf::Texture grassTileTexture;
+	sf::Texture dirtTileTexture;
+
 	sf::Texture vikingTexture;
 
 	sf::Font textFont;
@@ -13,6 +15,8 @@ struct Resources
 	Resources()
 	{
 		grassTileTexture.loadFromFile("res/grass.png");
+		dirtTileTexture.loadFromFile("res/grass_burn.png");
+
 		vikingTexture.loadFromFile("res/viking.png");
 
 		textFont.loadFromFile("C:/Windows/Fonts/Calibri.ttf");

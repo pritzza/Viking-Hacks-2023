@@ -32,7 +32,18 @@ private:
 	Entity player{ {0,0}, {50,50}, sf::Color::White, sf::Color::Blue };
 	std::vector<Entity> entities;
 
-    Stage stage{ 20, 10 };
+	// LOOK AT CONSTRUCTOR OF Stage IN Stage.cpp FOR CHARACTER MAPPINGS
+	const std::string STAGE_1_DATA{
+		R"(
+		..........
+		..........
+		....gggg..
+		gggggddggg
+		dddddddddd
+		)"
+	};
+
+    Stage stage{ 10, 5, STAGE_1_DATA };
 
 	int frame{};
 

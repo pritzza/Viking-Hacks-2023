@@ -39,7 +39,7 @@ void Entity::update(float dt, Stage& s, std::vector<Entity>& entities)
 
     for (int i = 0; i < s.tiles.size(); ++i)
     {
-        if (s.tiles[i].exists)
+        if (s.tiles[i]->isSolid)
         {
             int x = i % s.width;
             int y = i / s.width;
