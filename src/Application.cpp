@@ -28,8 +28,10 @@ void Application::init()
 		entities.back().hasGravity = true;
 	}
 
-
+	player.sprite.setTexture(res.vikingTexture);
 	player.hasGravity = true;
+
+	stage.tileSprite.setTexture(res.grassTileTexture);
 }
 
 void Application::start()
@@ -79,11 +81,11 @@ void Application::applicationLoop()
 		if constexpr (FRAME_DEBUGGING)
 			if (frame % TARGET_FPS == 0)
 			{
-				std::cout << "Cur Time: " << currentFrameStart.asMicroseconds() << '\n';
+				/*std::cout << "Cur Time: " << currentFrameStart.asMicroseconds() << '\n';
 				std::cout << "Avg Frame Dev: " << deviation / frame << '\n';
 				std::cout << "DT: " << dt.asSeconds() << '\n';
 				std::cout << "DT Error: " << dt.asSeconds() - TARGET_FRAME_LENGTH << '\n';
-				std::cout << std::endl;
+				std::cout << std::endl;*/
 			}
 
 
@@ -127,7 +129,7 @@ void Application::update(float dt)
 
     player.update(dt, stage);
 
-	std::cout << "Player vertical velocity: " << -player.acceleration.y << '\n';
+	/*std::cout << "Player vertical velocity: " << -player.acceleration.y << '\n';*/
 
 	for (int i = 0; i < entities.size(); ++i)
 	{
@@ -146,12 +148,13 @@ void Application::render()
 
     window.clear();
 
-    window.draw(player.box);
-	
-	for (Entity& e : entities)
-		window.draw(e.box);
+	player.draw(window);
 
 	stage.draw(window);
+	
+	for (Entity& e : entities)
+		e.draw(window);
+
 
     window.display();
 }

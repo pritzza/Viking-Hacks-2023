@@ -1,11 +1,13 @@
 #pragma once
 
 #include <vector>
+#include <SFML/Graphics.hpp>S
 
 namespace sf 
 {
 	class RenderWindow;
 }
+
 
 struct Tile
 {
@@ -23,6 +25,8 @@ public:
 	int width;
 	int height;
 	int size;
+
+	sf::Sprite tileSprite;
 
 	void draw(sf::RenderWindow& w);
 };

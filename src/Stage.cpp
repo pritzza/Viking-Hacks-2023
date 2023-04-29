@@ -33,6 +33,11 @@ void Stage::draw(sf::RenderWindow& w)
 	tile.setOutlineThickness(1);
 	tile.setOutlineColor(sf::Color::White);
 
+	
+	const sf::Vector2f tileSpriteScale = { Tile::LENGTH/12.f, Tile::LENGTH/12.f };
+	tileSprite.setScale(tileSpriteScale);
+
+	//w.draw(tileSprite);
 	for (int i = 0; i < size; ++i)
 	{
 		int x = i % width;
@@ -41,8 +46,9 @@ void Stage::draw(sf::RenderWindow& w)
 
 		if (tiles[i].exists)
 		{
-			tile.setPosition(sf::Vector2f{ pos * Tile::LENGTH });
-			w.draw(tile);
+			tileSprite.setPosition(sf::Vector2f{ pos * Tile::LENGTH });
+			w.draw(tileSprite);
 		}
 	}
+
 }

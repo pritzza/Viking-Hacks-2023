@@ -15,10 +15,11 @@ Entity::Entity(
     pos{ pos },
     dim{ dim }
 {
-    box.setSize(sf::Vector2f(dim));
-    box.setFillColor(fill);
-    box.setOutlineColor(outline);
-    box.setOutlineThickness(1.f);
+    //box.setSize(sf::Vector2f(dim));
+    //box.setFillColor(fill);
+    //box.setOutlineColor(outline);
+    //box.setOutlineThickness(1.f);
+
 }
 
 void Entity::update(float dt, Stage& s)
@@ -82,11 +83,15 @@ void Entity::update(float dt, Stage& s)
     vel = { 0, 0 };
 
     box.setPosition(sf::Vector2f(pos));
+    //
+    sprite.setPosition(sf::Vector2f(pos));
 }
 
 void Entity::draw(sf::RenderWindow& window)
 {
     window.draw(box);
+
+    window.draw(sprite);
 }
 
 void Entity::move(const sf::Vector2f& f)
