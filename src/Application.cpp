@@ -7,6 +7,47 @@
 #include <functional>
 #include <math.h>
 
+enum class ButtonState
+{
+	Idle,
+	Pressed,
+	Held,
+	Released,
+};
+
+static ButtonState buttonStates[sf::Keyboard::KeyCount] = { ButtonState::Idle };
+
+void updateButtonState(const sf::Keyboard::Key keyID)
+{
+	ButtonState& buttonState{ buttonStates[keyID] };
+
+	if (sf::Keyboard::isKeyPressed(keyID))
+	{
+		switch (buttonState)
+		{
+		case ButtonState::Idle:
+			buttonState = ButtonState::Pressed;
+			break;
+		case ButtonState::Pressed:
+			buttonState = ButtonState::Held;
+			break;
+		}
+	}
+	else
+	{
+		switch (buttonState)
+		{
+		case ButtonState::Held:
+		case ButtonState::Pressed:
+			buttonState = ButtonState::Released;
+			break;
+		case ButtonState::Released:
+			buttonState = ButtonState::Idle;
+			break;
+		}
+	}
+}
+
 Application::Application(const uint16_t width, const uint16_t height, const uint8_t frameRate, const std::string& name)
 	:
 	m_window{ width, height, name },
@@ -21,15 +62,26 @@ void Application::init()
 
 	for (int i = 0; i < 3; ++i)
 	{
-		entities.emplace_back(Entity{
-			{ (i * 100.f) + 100.f, 100.f }, { 50,50 }, sf::Color::White, sf::Color::Red
-		});
+		e.pos = sf::Vector2f{ (i * 100.f) + 100.f, 100.f };
+		e.type = EntityType::Creature;
+		entities.push_back(e);
 
 		entities.back().hasGravity = true;
 	}
 
+	Entity vine{ { 100, 100 }, { 25, 300 }, sf::Color::Green, sf::Color{30,180,60} };
+	vine.onCollision = CollisionResponse::ResetJumps;
+	vine.type = EntityType::Object;
+	vine.hasGravity = false;
+
+	entities.push_back(vine);
 
 	player.hasGravity = true;
+
+	player.maxNumJumps = 2;
+
+	player.sprite.setTexture(res.vikingTexture);
+	stage.sprite.setTexture(res.grassTileTexture);
 }
 
 void Application::start()
@@ -116,27 +168,29 @@ void Application::handleInput()
     if (sf::Keyboard::isKeyPressed(sf::Keyboard::D))
         player.move({ 1,0 });
 
-	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Space))
-		player.jump(10);
-
+	if (buttonStates[sf::Keyboard::Space] == ButtonState::Pressed)
+		player.jump(20);
 }
 
 void Application::update(float dt)
 {
 	m_window.update();
 
-    player.update(dt, stage);
+	updateButtonState(sf::Keyboard::Space);
+
+    player.update(dt, stage, entities);
 
 	std::cout << "Player vertical velocity: " << -player.acceleration.y << '\n';
 
 	for (int i = 0; i < entities.size(); ++i)
 	{
 		Entity& e{ entities[i] };
-
-		if (frame % (120 / (i+1)) == 0)
-			e.jump(30);
-
-		e.update(dt, stage);
+		if (e.type != EntityType::Object)
+		{
+			if (frame % (120 / (i + 1)) == 0)
+				e.jump(30);
+		}
+		e.update(dt, stage, entities);
 	}
 }
 
@@ -144,12 +198,16 @@ void Application::render()
 {
     sf::RenderWindow& window{ m_window.getWindow() };
 
+	view.setCenter(player.pos + (player.dim/2.f));
+	view.setSize({ 800,600 });
+	window.setView(view);
+
     window.clear();
 
-    window.draw(player.box);
+	player.draw(window);
 	
 	for (Entity& e : entities)
-		window.draw(e.box);
+		e.draw(window);
 
 	stage.draw(window);
 

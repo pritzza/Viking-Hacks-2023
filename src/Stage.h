@@ -2,10 +2,7 @@
 
 #include <vector>
 
-namespace sf 
-{
-	class RenderWindow;
-}
+#include <SFML/Graphics.hpp>
 
 struct Tile
 {
@@ -24,5 +21,7 @@ public:
 	int height;
 	int size;
 
+	sf::Sprite sprite;
+	
 	void draw(sf::RenderWindow& w);
 };

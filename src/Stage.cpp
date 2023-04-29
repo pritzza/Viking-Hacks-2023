@@ -33,6 +33,9 @@ void Stage::draw(sf::RenderWindow& w)
 	tile.setOutlineThickness(1);
 	tile.setOutlineColor(sf::Color::White);
 
+	const sf::Vector2f tileSpriteScale = { Tile::LENGTH / 12.f, Tile::LENGTH / 12.f };
+	sprite.setScale(tileSpriteScale);
+
 	for (int i = 0; i < size; ++i)
 	{
 		int x = i % width;
@@ -43,6 +46,8 @@ void Stage::draw(sf::RenderWindow& w)
 		{
 			tile.setPosition(sf::Vector2f{ pos * Tile::LENGTH });
 			w.draw(tile);
+			sprite.setPosition(sf::Vector2f{ pos * Tile::LENGTH });
+			w.draw(sprite);
 		}
 	}
 }

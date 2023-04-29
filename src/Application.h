@@ -5,6 +5,8 @@
 #include "Stage.h"
 #include "Entity.h"
 
+#include "util/Resources.h"
+
 class Application final
 {
 public:
@@ -20,6 +22,9 @@ public:
 
 private:
 	Window m_window;
+	sf::View view;
+
+	Resources res;
 
 	Entity player{ {0,0}, {50,50}, sf::Color::White, sf::Color::Blue };
 	std::vector<Entity> entities;
