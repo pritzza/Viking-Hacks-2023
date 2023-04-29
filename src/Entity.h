@@ -23,6 +23,12 @@ enum class EntityType
 
 struct Entity
 {
+    //JUSTIN VARIABLES TO CHANGE LIKE SPEED AND STUFF
+    const float playerRunSpeed =40;
+    const float playerJumpSpeed = 50;
+
+
+
     Entity(
         const sf::Vector2f& pos,
         const sf::Vector2f& dim,
@@ -59,8 +65,8 @@ struct Entity
 
     EntityType type{ EntityType::Object };
 
-    float runSpeed{ 50 };
-    float jumpSpeed{ 50 };
+    float runSpeed{ playerRunSpeed };
+    float jumpSpeed{ playerJumpSpeed };
 
     void jump(int height);
 

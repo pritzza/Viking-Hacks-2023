@@ -29,21 +29,40 @@ private:
 
 	Cutscene* cutscene{ nullptr };
 
-	Entity player{ {0,0}, {25,50}, sf::Color::Transparent, sf::Color::Transparent };
+	Entity player{ {4,4}, {25,50}, sf::Color::Transparent, sf::Color::Transparent };
 	std::vector<Entity> entities;
 
 	// LOOK AT CONSTRUCTOR OF Stage IN Stage.cpp FOR CHARACTER MAPPINGS
 	const std::string STAGE_1_DATA{
 		R"(
-		i..................i
-		i..................i
-		i...gggg...........i
-		gggggddggggggggggggg
-		dddddddddddddddddddd
+		i....................................................................................................................................................ddddddddddd
+		i....................................................................................................................................................ddddddddddd
+		i....................................................................................................................................................ddddddddddd
+		i....................................................................................................................................................ddddddddddd
+		i....................................................................................................................................................ddddddddddd
+		i....................................................................................................................................................ddddddddddd
+		i....................................................................................................................................................ddddddddddd
+		i....................................................................................................................................................ddddddddddd
+		i....................................................................................................................................................ddddddddddd
+		i..................................................................................................ggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggd
+		i..................................................................................................ddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd
+		i..................................................................................................ddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd
+		i..................................................................................................ddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd
+		i..................................................................................................ddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd
+		gggggggg...........................................................................................ddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd
+		ddddddddg..........................................................................................ddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd
+		dddddddddg..............................................g..........................................ddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd
+		ddddddddddg............................................gdg.........................................ddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd
+		dddddddddddgggggggggggggggggggggggggggg...gggggggggggggdddgggggggggggggg...gg...gggggggggggggggggggddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd
+		ddddddddddddddddddddddddddddddddddddddg...gddddddddddddddddddddddddddddd...dd...dddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd
+		ddddddddddddddddddddddddddddddddddddddg...gddddddddddddddddddddddddddddd...dd...dddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd
+		ddddddddddddddddddddddddddddddddddddddg...gddddddddddddddddddddddddddddd...dd...dddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd
+		ddddddddddddddddddddddddddddddddddddddg...gddddddddddddddddddddddddddddd...dd...dddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd
+		ddddddddddddddddddddddddddddddddddddddgpppgdddddddddddddddddddddddddddddpppddpppdddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd
 		)"
 	};
 	//widthxheightxlevel data
-    Stage stage{ 20, 5, STAGE_1_DATA };
+    Stage stage{ 160, 24, STAGE_1_DATA };
 
 	int frame{};
 

@@ -41,6 +41,8 @@ public:
 	inline static const Tile emptyTile{ Tile::Graphic::Empty,	false,	false };
 	inline static const Tile invisibleTile{ Tile::Graphic::Empty,	true,	false };
 	inline static const Tile dirtTile{  Tile::Graphic::Dirt,	true,	false };
+	inline static const Tile portalTile{ Tile::Graphic::Empty,	false,	true };
+
 
 	std::vector<const Tile*> tiles;
 
