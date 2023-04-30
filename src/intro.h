@@ -8,7 +8,7 @@ using namespace std;
 class Intro
 {
 public:
-    static string username;
+    inline static string username;
     string temp;
     string c;
     
