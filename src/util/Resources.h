@@ -21,6 +21,9 @@ struct Resources
 	sf::Texture rainDropPoisonTexture;
 	sf::Texture evilcorpEmployeeTexture;
 
+	// projectiles
+	sf::Texture flowerProjectileTexture;
+
 	// backgrounds
 	sf::Texture forestBackgroundTexture;
 	sf::Texture waterBackgroundTexture;
@@ -45,6 +48,8 @@ struct Resources
 		rainDropTexture.loadFromFile("res/rain_drop.png");
 		rainDropPoisonTexture.loadFromFile("res/rain_drop_poison.png");
 		evilcorpEmployeeTexture.loadFromFile("res/evilcorp_employee.png");
+
+		flowerProjectileTexture.loadFromFile("res/flower_projectile.png");
 
 		forestBackgroundTexture.loadFromFile("res/forest_background.png");
 		waterBackgroundTexture.loadFromFile("res/water_background.png");

@@ -75,6 +75,8 @@ struct Entity
     int maxNumJumps{ 1 };
     int numJumpsLeft{ 0 };
 
+    const Entity* caster{ nullptr };
+
     EntityType type{ EntityType::Object };
     EntityID id{ EntityID::Null };
 
@@ -99,7 +101,8 @@ Entity createProjectile(
     const sf::Color& outlineColor,
     std::vector<CollisionResponse> entityHitSelfResponse,
     std::vector<CollisionResponse> entityHitOtherResponse,
-    std::vector<CollisionResponse> tileHit
+    std::vector<CollisionResponse> tileHit,
+    sf::Texture& texture
 );
 
 Entity createPlayer(Resources& res);

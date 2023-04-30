@@ -139,7 +139,7 @@ void Entity::update(float dt, Stage& s, std::vector<Entity>& entities)
             bool validCollision{ false };
 
             for (EntityType target : validTargets)
-                if (e.type == target)
+                if (e.type == target && this->caster != &e) // valid target and target isnt caster
                     validCollision = true;
 
             if (validCollision)
@@ -233,11 +233,14 @@ Entity createProjectile(
     const sf::Color& outlineColor,
     std::vector<CollisionResponse> entityHitSelfResponse,
     std::vector<CollisionResponse> entityHitOtherResponse,
-    std::vector<CollisionResponse> tileHit
+    std::vector<CollisionResponse> tileHit,
+    sf::Texture& texture
 )
 {
     sf::Vector2f position{ (caster.pos + (caster.dim / 2.f) - (dimensions / 2.f)) };
     Entity proj{ position, dimensions, outlineColor, fillColor };
+
+    proj.caster = &caster;
 
     proj.type = EntityType::Object;
     proj.id = EntityID::Projectile;
@@ -252,6 +255,13 @@ Entity createProjectile(
     proj.onEntityCollisionSelfResponse = entityHitSelfResponse;
     proj.onEntityCollisionOtherResponse = entityHitOtherResponse;
     proj.onTileCollision = tileHit;
+
+    proj.sprite.setTexture(texture);
+
+    const sf::Vector2 scale{
+        dimensions.x / texture.getSize().x, dimensions.y / texture.getSize().y 
+    };
+    proj.sprite.setScale(scale);
 
     return proj;
 }

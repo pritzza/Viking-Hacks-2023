@@ -77,8 +77,17 @@ void Application::init()
 	Entity vine{ createVine({ 1000, 100 }, { 25, 300 }, res) };
 	entities.push_back(vine);
 
-	Entity tree{ createDeadTree({600, 500}, {32, 160}, res) };
-	entities.push_back(tree);
+	Entity tree1{ createDeadTree({600, 500}, {32, 160}, res) };
+	entities.push_back(tree1);
+
+	Entity tree2{ createDeadTree({1184, 400}, {32, 160}, res) };
+	entities.push_back(tree2);
+
+	Entity tree3{ createDeadTree({1500, 400}, {32, 160}, res) };
+	entities.push_back(tree3);
+
+	Entity tree4{ createDeadTree({1816, 200}, {32, 160}, res) };
+	entities.push_back(tree4);
 
 	Entity badGuy1{ createBadGuy({800, 800}, res) };
 	entities.push_back(badGuy1);
@@ -89,10 +98,17 @@ void Application::init()
 	Entity badGuy3{ createBadGuy({2000, 100}, res) };
 	entities.push_back(badGuy3);
 
+	Entity badGuy4{ createBadGuy({2838, 0}, res) };
+	entities.push_back(badGuy4);
+
 	player.pos = { 500, 500 };
 
 	// cutscene
-	std::vector<std::string> lines{ "Hello " + Intro::username, "We're not going to let you save the environment!", "Mwahahaha, we've burned the forest!" };
+	std::vector<std::string> lines{ 
+		"Hello " + Intro::username, 
+		"We're not going to let you save the environment!", 
+		"Mwahahaha, we've burned the forest!" 
+	};
 	Cutscene* scene = new Cutscene{ lines };
 	scene->spotlight = &entities[2];
 	scene->init(res);
@@ -143,7 +159,7 @@ void Application::applicationLoop()
 			deviation += dt.asSeconds() - TARGET_FRAME_LENGTH;
 
 		// frame debugging
-		static constexpr bool FRAME_DEBUGGING{ true };
+		static constexpr bool FRAME_DEBUGGING{ false };
 		if constexpr (FRAME_DEBUGGING)
 			if (frame % TARGET_FPS == 0)
 			{
@@ -186,7 +202,7 @@ void Application::handleInput()
 		player.jump(20);
 
 	if (buttonStates[sf::Keyboard::Q] == ButtonState::Pressed)
-		player.pos = { 200, 0 };
+		player.pos = { 200, 300 };
 	
 	if (buttonStates[sf::Keyboard::P] == ButtonState::Pressed)
 	{
@@ -202,7 +218,8 @@ void Application::handleInput()
 			sf::Color::Green,
 			{ CollisionResponse::Disappear },	// self
 			{ CollisionResponse::Hurt },		// other
-			{ CollisionResponse::Disappear }	// tile
+			{ CollisionResponse::Disappear },	// tile
+			res.flowerProjectileTexture
 		);
 
 		entities.push_back(projectile);
